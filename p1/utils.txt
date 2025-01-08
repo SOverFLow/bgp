@@ -1,0 +1,25 @@
+sudo apt update && sudo apt upgrade -y
+
+
+#install docker 
+
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+
+
+#install gns3
+
+sudo add-apt-repository ppa:gns3/ppa
+sudo apt update
+sudo apt install -y gns3-gui gns3-server
+
+#Test the FRR Container in GNS3
+
+vtysh
+show running-config
+show bgp summary
+
+
+
