@@ -21,5 +21,15 @@ vtysh
 show running-config
 show bgp summary
 
+# Assign an IP address:
+
+ifconfig eth0 192.168.1.2 netmask 255.255.255.0 up
+
+#Ping the other host
+
+ping 192.168.1.3
+
+
+
 
 
