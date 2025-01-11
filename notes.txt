@@ -1,0 +1,8 @@
+- GNS3 (Graphical Network Simulator-3) is an application that allows users to design, build, and test virtual networks in a simulated environment.
+
+- BusyBox refers to a lightweight software utility that provides a minimal set of Unix tools, often used in embedded Linux systems or minimalist environments.
+- BGP (Border Gateway Protocol) is the protocol used to route data between different networks on the internet. It helps determine the best path for data to travel across the vast network of interconnected networks, called the internet backbone.
+- The internet backbone refers to the high-capacity, long-distance network infrastructure that forms the core of the internet, think of it like the main highways of the internet.
+* example of BGP Usage:
+    When a customer of ISP A wants to access a website hosted by ISP B, BGP helps the ISPs decide how to send data between their networks. It does this by exchanging information about the available paths (routes) and selecting the most efficient one based on rules like path length, cost, or reliability.
+- Internet Service Providers (ISPs) are companies or organizations that provide individuals, businesses, and other organizations access to the internet.
