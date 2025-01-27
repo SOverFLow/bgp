@@ -1,0 +1,28 @@
+hostname frrr-1
+!
+iterface eth0
+ ip address 10.1.1.1/30
+!
+iterface eth1
+ ip address 10.1.1.5/30
+!
+iterface eth2
+ ip address 10.1.1.9/30
+!
+iterface lo
+ ip address 1.1.1.1/32
+!
+router bgp 1
+ neighbor ibgp peer-group
+ neighbor ibgp remote-as 1
+ neighbor ibgp route-reflector-client
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  neighbor ibgp activate
+  neighbor ibgp route-feflector-client
+  exit-address-family
+!
+router ospf
+ network 0.0.0.0/0 area 0
+
