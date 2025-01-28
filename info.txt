@@ -1,0 +1,174 @@
+- VXLAN is a network virtualization technology that allows you to create Layer 2 
+networks over a Layer 3 infrastructure. 
+It is commonly used in data centers to extend Layer 2 
+segments across multiple physical locations
+
+- The goal of part 2 is to create a VXLAN network that can communicate between two machines
+
+- VXLAN (Virtual Extensible LAN) is a network virtualization technology that encapsulates Layer 2 
+Ethernet frames within Layer 3 UDP packets.
+
+- It allows you to create virtual Layer 2 networks (like VLANs) over a Layer 3 network (like IP).
+
+- VXLAN is often used in data centers to extend Layer 2 segments across multiple physical locations,
+
+- Why use VXLAN?
+
+- Scalability: Traditional VLANs are limited to 4096 unique IDs (12-bit VLAN ID). 
+VXLAN uses a 24-bit segment ID, allowing for up to 16 million unique VXLAN segments.
+
+- Flexibility: VXLAN allows you to extend Layer 2 networks across Layer 3 boundaries, which is useful in cloud environments where virtual machines (VMs) need to be moved between different physical servers.
+
+- Isolation: VXLAN provides network isolation similar to VLANs but with greater scalability.
+
+- How does VXLAN work?
+- Encapsulation: VXLAN encapsulates Layer 2 Ethernet frames into UDP packets.
+ The original Ethernet frame is wrapped in a VXLAN header,
+  which includes a 24-bit VXLAN Network Identifier (VNI) to identify the VXLAN segment.
+
+- VTEP (VXLAN Tunnel Endpoint): This is the device that performs the encapsulation and decapsulation
+ of VXLAN packets. It can be a physical switch, 
+ a virtual switch, or a software-based endpoint.
+
+- Multicast or Unicast: VXLAN can use multicast or unicast to transport the
+ encapsulated packets. In this project, you will start with static configuration 
+ and then move to dynamic multicast.
+
+
+- A bridge is a virtual switch that connects multiple network interfaces together.
+
+You will create a bridge (br0) and attach the VXLAN interface to it.
+
+The bridge will allow the VXLAN to communicate with the Ethernet interfaces.
+
+Machine 1 (VTEP):
+
+# Create a bridge
+ip link add name br0 type bridge
+ip link set br0 up
+
+# Create a VXLAN interface with VNI 10
+ip link add vxlan10 type vxlan id 10 local 192.168.1.1 dstport 4789
+ip link set vxlan10 up
+
+# Attach the VXLAN interface to the bridge
+ip link set vxlan10 master br0
+
+# Configure Ethernet interface (e.g., eth1)
+ip link set eth1 up
+ip link set eth1 master br0
+
+Machine 2 (VTEP):
+
+# Create a bridge
+ip link add name br0 type bridge
+ip link set br0 up
+
+# Create a VXLAN interface with VNI 10
+ip link add vxlan10 type vxlan id 10 local 192.168.1.2 dstport 4789
+ip link set vxlan10 up
+
+# Attach the VXLAN interface to the bridge
+ip link set vxlan10 master br0
+
+# Configure Ethernet interface (e.g., eth1)
+ip link set eth1 up
+ip link set eth1 master br0
+
+Dynamic Multicast Configuration:
+In the second part of this task, you will configure the VXLAN to use dynamic multicast
+. This means that the VTEPs will use multicast groups to discover each other automatically.
+
+Multicast Group: You will configure the VXLAN to use a multicast group (e.g., 239.1.1.1).
+
+Automatic Discovery: The VTEPs will join the multicast group and automatically discover each other.
+
+Example Configuration for Multicast:
+# Create a VXLAN interface with multicast group 239.1.1.1
+ip link add vxlan10 type vxlan id 10 group 239.1.1.1 dstport 4789
+
+
+- GNS3 is a network simulation tool that allows you to emulate real network devices 
+(routers, switches, etc.) and create complex network topologies. It uses virtualization 
+to run network operating systems (like Cisco IOS)
+ and connect them in a simulated environment.
+
+ - BGP (Border Gateway Protocol) is a routing protocol used to exchange routing 
+ information between different autonomous systems (AS) on the internet. It is the protocol that makes 
+ the internet work by determining the best paths for data to travel between networks.
+
+ - Layer 2 (Data Link Layer): Deals with MAC addresses and switches.
+  It is responsible for node-to-node communication (e.g., Ethernet).
+
+- Layer 3 (Network Layer): Deals with IP addresses and routers. 
+It is responsible for end-to-end communication across multiple networks.
+
+- What is a packet routing software?
+
+Packet routing software (like Zebra or Quagga) is used to manage routing protocols on a network device.
+ It allows the device to determine the best path for data packets to travel.
+
+ - What is the OSPFD service?
+
+- OSPFD is the OSPF (Open Shortest Path First) daemon. It is used for routing within an autonomous system
+ (intra-AS routing) and uses a link-state routing algorithm.
+
+ - What is a VXLAN, and how is it different from a VLAN?
+
+VXLAN (Virtual Extensible LAN) is a network virtualization technology that extends Layer 2 networks 
+over Layer 3 infrastructure using encapsulation. Unlike VLANs,
+ which are limited to 4096 IDs, VXLAN supports up to 16 million unique segments.
+
+ - What is a switch?
+
+ - A switch is a network device that operates at Layer 2 and forwards data based on MAC addresses.
+
+ - What is a bridge?
+
+- A bridge is a virtual switch that connects multiple network interfaces together, 
+allowing them to communicate as if they were on the same physical network.
+
+- What is the difference between broadcast and multicast?
+
+ - Broadcast: Sends data to all devices in a network segment.
+
+- Multicast: Sends data to a specific group of devices that have joined a multicast group.
+
+- Explain the expected operation of the topology in the subject.
+
+- The topology involves setting up a VXLAN network with two VTEPs (VXLAN Tunnel Endpoints) 
+that communicate over a Layer 3 network. 
+The VXLAN ID is 10, and the network should allow communication between the two machines.
+
+- What is the difference between static and dynamic multicast in VXLAN?
+
+- Static: Manually configured VTEPs.
+
+- Dynamic Multicast: VTEPs automatically discover each other using multicast groups
+
+
+Why This is Important in the Project:
+
+VXLAN allows devices in different physical or virtual networks to behave as if they’re
+ on the same Layer 2 domain.
+
+ - Why Relevant to Part 2:
+
+- The FRR container simulates a switch by bridging Ethernet and VXLAN interfaces.
+
+In this project:
+Bridge interfaces in the FRR container connect VXLAN tunnels to the local Ethernet segment.
+
+- Broadcast:
+
+Sends data to all devices in a network.
+Example: ARP request (“Who has IP X?”).
+Inefficient for large networks since all devices must process the message.
+- Multicast:
+
+Sends data only to devices that have joined a specific multicast group.
+Example: VXLAN uses multicast for distributing broadcast and unknown unicast traffic across VTEPs.
+
+Why Relevant to VXLAN:
+
+Multicast ensures efficient distribution of VXLAN BUM traffic (Broadcast, Unknown Unicast, Multicast).
