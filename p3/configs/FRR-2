@@ -10,8 +10,8 @@ hostname frrr-2
 no ipv6 forwarding
 !
 interface eth0
- 	p address 10.1.1.2/30
-	ip of area 0
+ 	ip address 10.1.1.2/30
+	ip ospf area 0
  !
  interface lo
  	ip address 1.1.1.2/32
@@ -22,7 +22,9 @@ interface eth0
  	neighbor 1.1.1.1 update-source lo
  	!
  	address-family l2vpn evpn
- 	advertise-all-vin
+ 		neighbor 1.1.1.1 activate
+ 		advertise-all-vni
  	exit-address-family
  !
  router ospf
+!
