@@ -1,0 +1,4 @@
+
+# assigne the host 1 interface an ip ex: 30.1.1.1/24
+
+ip addr add 30.1.1.1/24 dev eth1
