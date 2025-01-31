@@ -1,0 +1,9 @@
+# Host 2 Setup
+
+# First use bash to make the setup going well 
+
+bash
+
+# assigne the host 2 interface an ip ex: 30.1.1.2/24
+
+ip addr add 30.1.1.2/24 dev eth1

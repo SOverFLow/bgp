@@ -1,0 +1,25 @@
+# Router 2 Setup (the same as the router 1 we only change the ip)
+
+# First use bash to make the setup going well 
+
+bash
+
+# Create a new bridge named br0 and set it up
+
+ip link add br0 type bridge
+ip link set br0 up
+
+# assigne the eth0 interface an ip ex: 10.1.1.2/24
+
+ip addr add 10.1.1.2/24 dev eth0
+
+# create the vxlan named vxlan10 and set it up
+
+ip link add name vxlan10 type vxlan id 10 dev eth0 remote 10.1.1.1 local 10.1.1.2 dstport 4789
+
+ip link set vxlan10 up
+
+# add the vxlan10 and the eth1 to the br0 bridge
+
+brctl addif br0 vxlan10
+brctl addif br0 eth1
